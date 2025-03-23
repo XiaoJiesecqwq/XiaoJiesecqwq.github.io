@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ftp服务器搭建部署 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Ftp服务器配置1、创建一个挂载点（目录） 1mkdir &#x2F;mnt&#x2F;cdrom  2、挂载光盘到创建的目录 1mount &#x2F;dev&#x2F;cdrom &#x2F;mnt&#x2F;cdrom   卸载光盘:umount &#x2F;mnt&#x2F;cdrom  3、配置本地光盘源 1234mkdir &#x2F;etc&#x2F;yum.repos.d&#x2F;bakcd &#x2F;etc&#x2F;yum.repos.dmv *.repo .&#x2F;bakvi &#x2F;etc&#x2F;yum.repos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ftp服务器搭建部署">
+<meta property="og:url" content="http://example.com/2024/12/10/Ftp%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Ftp服务器配置1、创建一个挂载点（目录） 1mkdir &#x2F;mnt&#x2F;cdrom  2、挂载光盘到创建的目录 1mount &#x2F;dev&#x2F;cdrom &#x2F;mnt&#x2F;cdrom   卸载光盘:umount &#x2F;mnt&#x2F;cdrom  3、配置本地光盘源 1234mkdir &#x2F;etc&#x2F;yum.repos.d&#x2F;bakcd &#x2F;etc&#x2F;yum.repos.dmv *.repo .&#x2F;bakvi &#x2F;etc&#x2F;yum.repos">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.gitmirror.com/InitiallyMXJ/Picture/main/Ftp%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/1.png?raw=true">
+<meta property="og:image" content="https://raw.gitmirror.com/InitiallyMXJ/Picture/main/Ftp%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/2.png?raw=true">
+<meta property="og:image" content="https://raw.gitmirror.com/InitiallyMXJ/Picture/main/Ftp%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/3.png?raw=true">
+<meta property="article:published_time" content="2024-12-10T10:39:37.000Z">
+<meta property="article:modified_time" content="2024-12-11T10:43:22.777Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.gitmirror.com/InitiallyMXJ/Picture/main/Ftp%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/1.png?raw=true">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Ftp服务器搭建部署" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/12/10/Ftp%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E9%83%A8%E7%BD%B2/" class="article-date">
+  <time class="dt-published" datetime="2024-12-10T10:39:37.000Z" itemprop="datePublished">2024-12-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Ftp服务器搭建部署
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Ftp服务器配置"><a href="#Ftp服务器配置" class="headerlink" title="Ftp服务器配置"></a>Ftp服务器配置</h2><p>1、创建一个挂载点（目录）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /mnt/cdrom</span><br></pre></td></tr></table></figure>
+
+<p>2、挂载光盘到创建的目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/cdrom /mnt/cdrom</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>卸载光盘:<code>umount /mnt/cdrom</code></p>
+</blockquote>
+<p>3、配置本地光盘源</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir /etc/yum.repos.d/bak</span><br><span class="line">cd /etc/yum.repos.d</span><br><span class="line">mv *.repo ./bak</span><br><span class="line">vi /etc/yum.repos.d/cdrom.repo</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[cdrom]</span><br><span class="line">name=cdrom</span><br><span class="line">baseurl=file:///mnt/cdrom</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br></pre></td></tr></table></figure>
+
+<p>4、安装ftp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install vsftpd</span><br></pre></td></tr></table></figure>
+
+<p>5、创建用户、用户组</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">groupadd dept1 #创建一个名为dept1的用户组</span><br><span class="line">groupadd dept2 #创建一个名为dept2的用户组</span><br><span class="line">groupadd master #创建一个名为master的用户组</span><br><span class="line">useradd -G dept1 tom #创建一个名为tom的用户，并将其添加到dept1用户组作为附加组</span><br><span class="line">useradd -G dept2 jack #创建jack用户，并将其添加到dept2用户组作为附加组</span><br><span class="line">useradd -G dept1,dept2,master mike #创建mike用户，并将其添加到dept1、dept2和master这三个用户组作为附加组</span><br><span class="line">tail /etc/gshadow #查看/etc/gshadow文件的末尾几行</span><br></pre></td></tr></table></figure>
+
+<p>6、设置密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"># 切换到 /etc/yum.repos.d/ 目录，该目录通常存放yum软件源配置文件相关内容</span><br><span class="line">cd /etc/yum.repos.d/  </span><br><span class="line"># 为用户 tom 设置登录操作系统的密码，执行后会提示输入新密码并进行确认操作</span><br><span class="line">passwd tom  </span><br><span class="line"># 为用户 jack 设置登录操作系统的密码，同样会有相应的密码输入及确认提示</span><br><span class="line">passwd jack  </span><br><span class="line"># 为用户 mike 设置登录操作系统的密码</span><br><span class="line">passwd mike  </span><br><span class="line"># 在根目录下创建名为 /ftp 的目录，可能用于后续搭建FTP相关服务的文件存放等用途</span><br><span class="line">mkdir /ftp  </span><br><span class="line"># 切换到刚创建的 /ftp 目录</span><br><span class="line">cd /ftp  </span><br><span class="line"># 在 /ftp 目录下分别创建 dept1、dept2、master 这三个子目录，可能对应不同部门或不同功能用途的目录结构</span><br><span class="line">mkdir dept1 dept2 master  </span><br><span class="line"># 进入 dept1 子目录</span><br><span class="line">cd dept1  </span><br><span class="line"># 在 dept1 目录下创建一个名为 dept1.txt 的空文件，可用于后续存放相关数据等</span><br><span class="line">touch dept1.txt  </span><br><span class="line"># 返回上一级目录，即回到 /ftp 目录</span><br><span class="line">cd..  </span><br><span class="line"># 进入 dept2 子目录</span><br><span class="line">cd dept2  </span><br><span class="line"># 在 dept2 目录下创建一个名为 dept2.txt 的空文件</span><br><span class="line">touch dept2.txt  </span><br><span class="line"># 返回上一级目录，再次回到 /ftp 目录</span><br><span class="line">cd..  </span><br><span class="line"># 进入 master 子目录</span><br><span class="line">cd master/  </span><br><span class="line"># 在 master 目录下创建一个名为 master.txt 的空文件</span><br><span class="line">touch master.txt  </span><br><span class="line"># 返回上一级目录，回到 /ftp 目录</span><br><span class="line">cd..  </span><br><span class="line"># 以长格式列出 /ftp 目录下的文件和子目录信息，展示详细的权限、所有者、所属组等情况</span><br><span class="line">ls -l  </span><br><span class="line"># 将 dept1 目录的所有者设置为 tom，所属组设置为 dept1，用于明确该目录的归属及权限管理基于的用户组等情况</span><br><span class="line">chown tom:dept1 dept1  </span><br><span class="line"># 再次以长格式列出 /ftp 目录下的文件和子目录信息，查看权限、所有者等是否按预期改变</span><br><span class="line">ls -l  </span><br><span class="line"># 将 /ftp/dept2 目录的所有者设置为 jack，所属组设置为 dept2，进一步对目录归属进行调整</span><br><span class="line">chown jack:dept2 /ftp/dept2  </span><br><span class="line"># 将当前目录（即 /ftp 目录下）的 master 目录的所有者设置为 mike，所属组设置为 master</span><br><span class="line">chown mike:master ./master  </span><br><span class="line"># 第三次以长格式列出 /ftp 目录下的文件和子目录信息，确认相关目录的所有者和所属组设置情况</span><br><span class="line">ls -l  </span><br><span class="line"># 将 dept1 目录的权限设置为 777，意味着所有者、所属组以及其他用户都拥有读、写、执行权限，</span><br><span class="line"># 一般测试环境使用较方便，但生产环境需谨慎考虑安全性问题</span><br><span class="line">chmod 777 dept1  </span><br><span class="line"># 将 dept2 目录的权限也设置为 777，赋予各用户最大权限</span><br><span class="line">chmod 777 dept2  </span><br><span class="line"># 将 master 目录的权限同样设置为 777</span><br><span class="line">chmod 777 master  </span><br><span class="line"># 切换到 /etc/vsftpd/ 目录，该目录通常存放vsftpd（FTP服务器软件）的配置文件等相关内容</span><br><span class="line">cd /etc/vsftpd/  </span><br><span class="line"># 列出 /etc/vsftpd/ 目录下的文件和子目录，查看存在哪些与vsftpd相关的文件等情况</span><br><span class="line">ls  </span><br><span class="line"># 使用vi编辑器打开 vsftpd.conf 文件，该文件是vsftpd服务的主配置文件，通常可在里面进行如访问控制、用户权限等各项配置的修改</span><br><span class="line">vi vsftpd.conf</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.gitmirror.com/InitiallyMXJ/Picture/main/Ftp%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/1.png?raw=true"></p>
+<p><img src="https://raw.gitmirror.com/InitiallyMXJ/Picture/main/Ftp%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/2.png?raw=true"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld</span><br><span class="line">setenforce 0</span><br><span class="line">systemctl restart vsftpd.service</span><br></pre></td></tr></table></figure>
+
+<p>7、ftp连接</p>
+<p><img src="https://raw.gitmirror.com/InitiallyMXJ/Picture/main/Ftp%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/3.png?raw=true"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/12/10/Ftp%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E9%83%A8%E7%BD%B2/" data-id="cm8lczcx70001p4uh8zeq83ne" data-title="Ftp服务器搭建部署" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/12/10/Samba%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E9%83%A8%E7%BD%B2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Samba服务器搭建部署
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/12/10/Web%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E9%83%A8%E7%BD%B2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Web服务器搭建部署</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">March 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/11/">November 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/03/23/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2024/12/10/Samba%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E9%83%A8%E7%BD%B2/">Samba服务器搭建部署</a>
+          </li>
+        
+          <li>
+            <a href="/2024/12/10/Ftp%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E9%83%A8%E7%BD%B2/">Ftp服务器搭建部署</a>
+          </li>
+        
+          <li>
+            <a href="/2024/12/10/Web%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E9%83%A8%E7%BD%B2/">Web服务器搭建部署</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/11/%E7%AC%AC%E5%85%AB%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AF%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9BMISC%E9%A2%98%E7%9B%AE/">第八届御网杯信息安全大赛MISC题目</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
