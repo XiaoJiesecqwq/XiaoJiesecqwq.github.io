@@ -1,0 +1,259 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>一只斑马兽の个人主页 | 一只斑马兽の个人主页</title><meta name="author" content="XiaoJiesecqwq"><meta name="copyright" content="XiaoJiesecqwq"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="1234567title: 第九届御网杯网络安全大赛线下赛Writeupdate: 2025-08-17 21:10:27cover: https:&#x2F;&#x2F;makedown-typora.oss-cn-beijing.aliyuncs.com&#x2F;typora-img&#x2F;ywb9.pngcategories:-CTF竞赛tags:-CTF    一、**Web_**Writeup1、Web-IP绕过打开实例">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一只斑马兽の个人主页">
+<meta property="og:url" content="https://xiaojiesecqwq.github.io/2025/08/17/%E7%AC%AC%E4%B9%9D%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B%E7%BA%BF%E4%B8%8B%E8%B5%9BWriteup/index.html">
+<meta property="og:site_name" content="一只斑马兽の个人主页">
+<meta property="og:description" content="1234567title: 第九届御网杯网络安全大赛线下赛Writeupdate: 2025-08-17 21:10:27cover: https:&#x2F;&#x2F;makedown-typora.oss-cn-beijing.aliyuncs.com&#x2F;typora-img&#x2F;ywb9.pngcategories:-CTF竞赛tags:-CTF    一、**Web_**Writeup1、Web-IP绕过打开实例">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiaojiesecqwq.github.io/img/Xiaojiesecqwq.jpg">
+<meta property="article:published_time" content="2025-08-17T13:29:39.897Z">
+<meta property="article:modified_time" content="2025-08-17T13:41:26.781Z">
+<meta property="article:author" content="XiaoJiesecqwq">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiaojiesecqwq.github.io/img/Xiaojiesecqwq.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "",
+  "url": "https://xiaojiesecqwq.github.io/2025/08/17/%E7%AC%AC%E4%B9%9D%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B%E7%BA%BF%E4%B8%8B%E8%B5%9BWriteup/",
+  "image": "https://xiaojiesecqwq.github.io/img/Xiaojiesecqwq.jpg",
+  "datePublished": "2025-08-17T13:29:39.897Z",
+  "dateModified": "2025-08-17T13:41:26.781Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "XiaoJiesecqwq",
+      "url": "https://xiaojiesecqwq.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/Xiaojiesecqwq.jpg"><link rel="canonical" href="https://xiaojiesecqwq.github.io/2025/08/17/%E7%AC%AC%E4%B9%9D%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B%E7%BA%BF%E4%B8%8B%E8%B5%9BWriteup/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '一只斑马兽の个人主页',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/background.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/Xiaojiesecqwq.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/background.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">一只斑马兽の个人主页</span></a><a class="nav-page-title" href="/"><span class="site-name">一只斑马兽の个人主页</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">无标题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-08-17T13:29:39.897Z" title="发表于 2025-08-17 21:29:39">2025-08-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-08-17T13:41:26.781Z" title="更新于 2025-08-17 21:41:26">2025-08-17</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">title: 第九届御网杯网络安全大赛线下赛Writeup</span><br><span class="line">date: 2025-08-17 21:10:27</span><br><span class="line">cover: https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/ywb9.png</span><br><span class="line">categories:</span><br><span class="line">-CTF竞赛</span><br><span class="line">tags:</span><br><span class="line">-CTF</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="一、-Web-Writeup"><a href="#一、-Web-Writeup" class="headerlink" title="一、**Web_**Writeup"></a>一、**Web_**<strong>Writeup</strong></h2><h4 id="1、Web-IP绕过"><a href="#1、Web-IP绕过" class="headerlink" title="1、Web-IP绕过"></a><strong>1、Web-IP绕过</strong></h4><p>打开实例，下载附件源码</p>
+<p>代码审计</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">header</span>(<span class="string">&#x27;Content-Type: text/html; charset=utf-8&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$cip </span>= <span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_CLIENT_IP&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span><span class="title function_ invoke__"> </span>(<span class="variable">$cip </span>!= <span class="string">&quot;1.2.3.4&quot;</span>) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;非法IP地址，只有1.2.3.4才能访问！&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">exit</span>();</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$username </span>= <span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable">$password </span>= <span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span><span class="title function_ invoke__"> </span>(<span class="variable">$username </span>=== <span class="string">&quot;admin&quot;</span> &amp;&amp; <span class="variable">$password </span>=== <span class="string">&quot;admin123&quot;</span>) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;登录成功！&lt;br&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$flag </span>= <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;../../../../flag.txt&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line"></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;用户名或密码错误！&quot;</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>判断了HTTP_CLIENT_IP的传入是否是1.2.3.4 </p>
+<p>用户名为admin，密码为admin123</p>
+<p>打开burp抓包 然后添加HTTP头Client-IP: 1.2.3.4</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213056596.png" alt="image-20250817213056596"></p>
+<p>得到flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;HNCTF219832818s&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、Web-命令执行"><a href="#2、Web-命令执行" class="headerlink" title="2、Web-命令执行"></a>2、Web-命令执行</h4><p>打开实例</p>
+<p>发现需要进行代码审计</p>
+<p>审计得出:</p>
+<p>在进行操作时，可考虑使用 base64_encode 或 base64_decode，同时要额外留意服务器是否允许使用 file_get_contents。需满足以下条件：一是 GET 参数 cmd 中必须包含子串 “base”（不区分大小写），但禁止包含如 system、exec、flag、php、cat 等黑名单关键词；二是因为文件名 flag.php 包含禁止词 flag 和 php，所以要避免在 cmd 中直接出现这些词；三是可借助 Base64 编码 &#x2F; 解码来绕过过滤。</p>
+<p>Payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?cmd=$a=base64_decode(%27ZmxhZy5waHA=%27);echo%20base64_encode(file_get_contents($a));</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213150288.png" alt="image-20250817213150288"></p>
+<p>base64解码</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213200069.png" alt="image-20250817213200069"></p>
+<p>得到flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;HNCTFPDSGYJSJNB666&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、-Misc-Writeup"><a href="#二、-Misc-Writeup" class="headerlink" title="二、**Misc_**Writeup"></a>二、**Misc_**<strong>Writeup</strong></h2><h4 id="1、文件隐写02"><a href="#1、文件隐写02" class="headerlink" title="1、文件隐写02"></a><strong>1、文件隐写02</strong></h4><p>下载附件，解压得到一个jpg图片</p>
+<p>拖入winhex</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213312680.png" alt="image-20250817213312680"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">666c61677b7761736a5f303130315f7a6968616f7d</span><br></pre></td></tr></table></figure>
+
+<p>得到一串字符然后进行16进制转文本</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213336759.png" alt="image-20250817213336759"></p>
+<p>得到flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;wasj_0101_zihao&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、次数还原"><a href="#2、次数还原" class="headerlink" title="2、次数还原"></a>2、次数还原</h4><p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213407559.png" alt="image-20250817213407559"></p>
+<p>分析每个字符频率的出现次数，进行排序后应该就是FLAG了</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213411959.png" alt="image-20250817213411959"></p>
+<p>然后进行反转</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213421808.png" alt="image-20250817213421808"></p>
+<p>得到flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FLAG&#123;B8o6han&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3、图片隐写02"><a href="#3、图片隐写02" class="headerlink" title="3、图片隐写02"></a><strong>3、图片隐写02</strong></h4><p>下载附件</p>
+<p>得到一半多的二维码</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213528368.png" alt="image-20250817213528368"></p>
+<p>底部被隐藏，那么大概率是宽高修改了。</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213536360.png" alt="image-20250817213536360"></p>
+<p>修改后 进行扫码</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213543851.png" alt="image-20250817213543851"></p>
+<p>得到一串base64编码</p>
+<p>然后解码</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213555377.png" alt="image-20250817213555377"></p>
+<p>得到flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Flag&#123;nisp_tupian12131&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4、鼠标流量"><a href="#4、鼠标流量" class="headerlink" title="4、鼠标流量"></a><strong>4、鼠标流量</strong></h4><p>下载附件得到一个流量分析文件</p>
+<p>然后拖入工具</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213615442.png" alt="image-20250817213615442"></p>
+<p>得到flag</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213632743.png" alt="image-20250817213632743"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;a3h58fw7ex&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、Crypto-Writeup"><a href="#三、Crypto-Writeup" class="headerlink" title="三、Crypto_Writeup"></a>三、Crypto_Writeup</h2><h4 id="1、Cyport-01"><a href="#1、Cyport-01" class="headerlink" title="1、Cyport_01"></a><strong>1、Cyport_01</strong></h4><p>随波逐流直接得到flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;829_ji87_88pk&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、Cyport-02"><a href="#2、Cyport-02" class="headerlink" title="2、Cyport_02"></a>2、Cyport_02</h4><p>丢入随波逐流发现是社会主义核心价值观解码</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213758209.png" alt="image-20250817213758209"></p>
+<p>继续解码得到flag</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213811924.png" alt="image-20250817213811924"></p>
+<h4 id="3、Find-flag"><a href="#3、Find-flag" class="headerlink" title="3、Find_flag"></a><strong>3、Find_flag</strong></h4><p>下载附件解压到底一个html和js文件</p>
+<p>打开js文件发现是混淆的MD5加密、特殊检查的js</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213900266.png" alt="image-20250817213900266"></p>
+<p>exp如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">104</span>, <span class="number">104</span>, <span class="number">102</span>, <span class="number">120</span>, <span class="number">117</span>, <span class="number">108</span>, <span class="number">48</span>, <span class="number">75</span>, <span class="number">81</span>, <span class="number">70</span>, <span class="number">87</span>, <span class="number">73</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">build_string</span>(<span class="params">index=<span class="number">0</span>, current=<span class="string">&quot;&quot;</span></span>):</span><br><span class="line">    <span class="keyword">if</span> index &gt;= <span class="built_in">len</span>(a):</span><br><span class="line">        <span class="keyword">return</span> current</span><br><span class="line">    <span class="keyword">return</span> build_string(index + <span class="number">1</span>, current + <span class="built_in">chr</span>(a[index] - <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">s = build_string()</span><br><span class="line"><span class="built_in">print</span>(s)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213923982.png" alt="image-20250817213923982"></p>
+<p>得到flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;eecuri-HNCTF&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4、ez-classical7"><a href="#4、ez-classical7" class="headerlink" title="4、ez_classical7"></a>4、ez_classical7</h4><p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817213953195.png" alt="image-20250817213953195"></p>
+<p>先反转一下</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817214000042.png" alt="image-20250817214000042"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mtjn&#123;PWJBOeEHLAcL67PWJ&#125;</span><br></pre></td></tr></table></figure>
+
+<p>mtjn-&gt;flag</p>
+<p>根据ascii码表 </p>
+<p>发现m-&gt;f  7  t-&gt;f  8  j-&gt;9 n-&gt;g 7</p>
+<p>由此编写exp</p>
+<p>得到flag</p>
+<p><img src="https://makedown-typora.oss-cn-beijing.aliyuncs.com/typora-img/image-20250817214018885.png" alt="image-20250817214018885"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">decrypt</span>(<span class="params">s</span>):</span><br><span class="line">    decrypted = []</span><br><span class="line">    shifts = [<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line">    shift_index = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> char <span class="keyword">in</span> s:</span><br><span class="line">        <span class="keyword">if</span> char <span class="keyword">in</span> <span class="string">&quot;&#123;&#125;0123456789&quot;</span>:</span><br><span class="line">            decrypted.append(char)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        shift_value = shifts[shift_index % <span class="built_in">len</span>(shifts)]</span><br><span class="line">        base = <span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>) <span class="keyword">if</span> char.islower() <span class="keyword">else</span> <span class="built_in">ord</span>(<span class="string">&#x27;A&#x27;</span>) <span class="keyword">if</span> char.isupper() <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> base:</span><br><span class="line">            shifted_code = (<span class="built_in">ord</span>(char) - base - shift_value) % <span class="number">26</span></span><br><span class="line">            decrypted.append(<span class="built_in">chr</span>(shifted_code + base))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            decrypted.append(char)</span><br><span class="line"></span><br><span class="line">        shift_index += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join(decrypted)</span><br><span class="line"></span><br><span class="line">cipher = <span class="string">&quot;mtjn&#123;PWJBOeEHLAcL67PWJ&#125;&quot;</span></span><br><span class="line">plaintext = decrypt(cipher)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;解密结果:&quot;</span>, plaintext)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;HNCTFxWYEStE67HNC&#125;</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://xiaojiesecqwq.github.io">XiaoJiesecqwq</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://xiaojiesecqwq.github.io/2025/08/17/%E7%AC%AC%E4%B9%9D%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B%E7%BA%BF%E4%B8%8B%E8%B5%9BWriteup/">https://xiaojiesecqwq.github.io/2025/08/17/第九届御网杯网络安全大赛线下赛Writeup/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://xiaojiesecqwq.github.io" target="_blank">一只斑马兽の个人主页</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/Xiaojiesecqwq.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/08/17/hello-world/" title="Hello World"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Hello World</div></div><div class="info-2"><div class="info-item-1">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new &quot;My New Post&quot;  More info: Writing Run server1$ hexo server  More info: Server Generate static files1$ hexo generate  More info: Generating Deploy to remote sites1$ hexo deploy  More info: Deployment </div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/Xiaojiesecqwq.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">XiaoJiesecqwq</div><div class="author-info-description">别心软</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/XiaoJiesecqwq/"><i class="fab fa-github"></i><span>🛴前往小家...</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a href="https://xiaojiesecqwq.github.io/"><b><font color="#5ea6e5">xiaojiesecqwq</font></b></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81-Web-Writeup"><span class="toc-text">一、**Web_**Writeup</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81Web-IP%E7%BB%95%E8%BF%87"><span class="toc-text">1、Web-IP绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81Web-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-text">2、Web-命令执行</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81-Misc-Writeup"><span class="toc-text">二、**Misc_**Writeup</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E6%96%87%E4%BB%B6%E9%9A%90%E5%86%9902"><span class="toc-text">1、文件隐写02</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E6%AC%A1%E6%95%B0%E8%BF%98%E5%8E%9F"><span class="toc-text">2、次数还原</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%9902"><span class="toc-text">3、图片隐写02</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%E3%80%81%E9%BC%A0%E6%A0%87%E6%B5%81%E9%87%8F"><span class="toc-text">4、鼠标流量</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Crypto-Writeup"><span class="toc-text">三、Crypto_Writeup</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81Cyport-01"><span class="toc-text">1、Cyport_01</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81Cyport-02"><span class="toc-text">2、Cyport_02</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81Find-flag"><span class="toc-text">3、Find_flag</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%E3%80%81ez-classical7"><span class="toc-text">4、ez_classical7</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/17/%E7%AC%AC%E4%B9%9D%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B%E7%BA%BF%E4%B8%8B%E8%B5%9BWriteup/" title="无标题">无标题</a><time datetime="2025-08-17T13:29:39.897Z" title="发表于 2025-08-17 21:29:39">2025-08-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/17/hello-world/" title="Hello World">Hello World</a><time datetime="2025-08-17T11:36:18.038Z" title="发表于 2025-08-17 19:36:18">2025-08-17</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By XiaoJiesecqwq</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
